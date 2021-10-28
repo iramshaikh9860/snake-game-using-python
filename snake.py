@@ -7,7 +7,7 @@ level = 1
 score = 0
 
 class SNAKE:
-	def _init_(self):
+	def __init__(self):
 		self.body = [Vector2(5,10),Vector2(4,10),Vector2(3,10)]
 		self.direction = Vector2(0,0)
 		self.new_block = False
@@ -99,7 +99,7 @@ class SNAKE:
 
 
 class FRUIT:
-	def _init_(self):
+	def __init__(self):
 		self.randomize()
 
 	def draw_fruit(self):
@@ -112,8 +112,40 @@ class FRUIT:
 		self.x = random.randint(0,cell_number - 1)
 		self.y = random.randint(0,cell_number - 1)
 		self.pos = Vector2(self.x,self.y)
+
+class WALL:
+	def __init__(self):
+		self.wallbrick = [Vector2(10,10),Vector2(11,10),Vector2(13,10)]
+		self.wall = pygame.image.load('Graphics/wall.jpg').convert_alpha()
+
+	def drawwall1(self):
+		self.i=2
+		self.j=3
+		self.k=1
+
+		for i in range (2,6):
+			wall_rect = pygame.Rect(int(i * cell_size),int(4 * cell_size),cell_size,cell_size)
+			screen.blit(self.wall,wall_rect)
+
+		for j in range (5,6):
+			wall_rect = pygame.Rect(int(2 * cell_size),int(j * cell_size),cell_size,cell_size)
+			screen.blit(self.wall,wall_rect)
+
+	def drawwall2(self):
+		self.a=2
+		self.b=3
+		self.c=1
+
+		for b in range (7,10):
+			wall_rect = pygame.Rect(int(15 * cell_size),int(b * cell_size),cell_size,cell_size)
+			screen.blit(self.wall,wall_rect)
+
+	# def wall3():
+	# 	pass
+
+
 class APPLE:
-	def _init_(self):
+	def __init__(self):
 		self.randomize()
 
 	def draw_fruit(self):
@@ -128,9 +160,10 @@ class APPLE:
 		self.pos = Vector2(self.x,self.y)
 
 class MAIN:
-	def _init_(self):
+	def __init__(self):
 		self.snake = SNAKE()
 		self.fruit = FRUIT()
+		self.wall = WALL()
 		self.apple = APPLE()
 
 	def update(self):
@@ -142,6 +175,8 @@ class MAIN:
 		self.draw_grass()
 		self.fruit.draw_fruit()
 		self.snake.draw_snake()
+		self.wall.drawwall1()
+		self.wall.drawwall2()
 		self.draw_score()
 
 	def second_apple(self):
@@ -204,7 +239,7 @@ cell_size = 40
 cell_number = 20
 screen = pygame.display.set_mode((cell_number * cell_size,cell_number * cell_size),pygame.RESIZABLE)
 clock = pygame.time.Clock()
-apple = pygame.image.load('Graphics/apple.jpg').convert_alpha()
+apple = pygame.image.load('Graphics/apple.png').convert_alpha()
 game_font = pygame.font.Font('Font/PoetsenOne-Regular.ttf', 25)
 
 SCREEN_UPDATE = pygame.USEREVENT
@@ -239,3 +274,5 @@ while True:
 	
 	pygame.display.update()
 	clock.tick(60)
+	
+		
