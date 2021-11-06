@@ -2,9 +2,11 @@ import pygame,sys,random
 from pygame.math import Vector2
 import time
 from threading import Timer
+import pygame_menu
 
 level = 1
 score = 0
+
 
 class SNAKE:
 	def __init__(self):
@@ -231,6 +233,49 @@ class MAIN:
 		if score==str(2) or score==str(10) or score==str(15) or score==str(20) or score==str(25) or score==str(30):
 			self.apple.draw_fruit()
 
+def game():
+    main_game = MAIN()
+
+    SCREEN_UPDATE = pygame.USEREVENT
+    pygame.time.set_timer(SCREEN_UPDATE,150)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.VIDEORESIZE:
+                surface = pygame.display.set_mode((event.w, event.h),pygame.RESIZABLE)
+            if event.type == SCREEN_UPDATE:
+                main_game.update()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    if main_game.snake.direction.y != 1:
+                        main_game.snake.direction = Vector2(0,-1)
+                if event.key == pygame.K_RIGHT:
+                    if main_game.snake.direction.x != -1:
+                        main_game.snake.direction = Vector2(1,0)
+                if event.key == pygame.K_DOWN:
+                    if main_game.snake.direction.y != -1:
+                        main_game.snake.direction = Vector2(0,1)
+                if event.key == pygame.K_LEFT:
+                    if main_game.snake.direction.x != 1:
+                        main_game.snake.direction = Vector2(-1,0)
+
+        main_game.draw_elements()
+        
+        pygame.display.update()
+        clock.tick(60)
+
+
+def easy():
+    game()
+    
+def medium():
+    game()
+    
+def hard():
+    game()
 
 
 pygame.mixer.pre_init(44100,-16,2,512)
@@ -241,38 +286,12 @@ screen = pygame.display.set_mode((cell_number * cell_size,cell_number * cell_siz
 clock = pygame.time.Clock()
 apple = pygame.image.load('Graphics/apple.png').convert_alpha()
 game_font = pygame.font.Font('Font/PoetsenOne-Regular.ttf', 25)
-
-SCREEN_UPDATE = pygame.USEREVENT
-pygame.time.set_timer(SCREEN_UPDATE,150)
-
-main_game = MAIN()
-
-while True:
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			pygame.quit()
-			sys.exit()
-		if event.type == pygame.VIDEORESIZE:
-			surface = pygame.display.set_mode((event.w, event.h),pygame.RESIZABLE)
-		if event.type == SCREEN_UPDATE:
-			main_game.update()
-		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_UP:
-				if main_game.snake.direction.y != 1:
-					main_game.snake.direction = Vector2(0,-1)
-			if event.key == pygame.K_RIGHT:
-				if main_game.snake.direction.x != -1:
-					main_game.snake.direction = Vector2(1,0)
-			if event.key == pygame.K_DOWN:
-				if main_game.snake.direction.y != -1:
-					main_game.snake.direction = Vector2(0,1)
-			if event.key == pygame.K_LEFT:
-				if main_game.snake.direction.x != 1:
-					main_game.snake.direction = Vector2(-1,0)
-
-	main_game.draw_elements()
-	
-	pygame.display.update()
-	clock.tick(60)
-	
-		
+menu = pygame_menu.Menu( 'Snake',600, 400,theme=pygame_menu.themes.THEME_BLUE)
+# menu.add_text_input('Name:', default='')
+# menu.add_selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
+menu.add.button('Easy', easy)
+menu.add.button('Medium', medium)
+menu.add.button('Hard', hard)
+# menu.add_button('Level 1', game_loop)
+menu.add.button('Quit', pygame_menu.events.EXIT)
+menu.mainloop(screen)
