@@ -115,7 +115,7 @@ class FRUIT:
 		self.y = random.randint(0,cell_number - 1)
 		self.pos = Vector2(self.x,self.y)
 
-class WALLLEVEL1:
+class WALL:
 	def __init__(self):
 		self.wallbrick = [Vector2(10,10),Vector2(11,10),Vector2(13,10)]
 		self.wall = pygame.image.load('Graphics/wall.jpg').convert_alpha()
@@ -142,54 +142,9 @@ class WALLLEVEL1:
 			wall_rect = pygame.Rect(int(15 * cell_size),int(b * cell_size),cell_size,cell_size)
 			screen.blit(self.wall,wall_rect)
 
-class WALLLEVEL2:
-	def __init__(self):
-		self.wallbrick = [Vector2(10,10),Vector2(11,10),Vector2(13,10)]
-		self.wall = pygame.image.load('Graphics/wall.jpg').convert_alpha()
+	# def wall3():
+	# 	pass
 
-	def drawwall1(self):
-		self.i=7
-		self.j=3
-		self.k=1
-
-		for i in range (6,11):
-			wall_rect = pygame.Rect(int(i * cell_size),int(4 * cell_size),cell_size,cell_size)
-			screen.blit(self.wall,wall_rect)
-
-		for j in range (6,9):
-			wall_rect = pygame.Rect(int(2 * cell_size),int(j * cell_size),cell_size,cell_size)
-			screen.blit(self.wall,wall_rect)
-
-	def drawwall2(self):
-		self.a=2
-		self.b=3
-		self.c=1
-
-		for b in range (7,10):
-			wall_rect = pygame.Rect(int(15 * cell_size),int(b * cell_size),cell_size,cell_size)
-			screen.blit(self.wall,wall_rect)
-
-	def drawwall3(self):
-		self.l=2
-		self.m=3
-		self.n=4
-
-		for m in range (9,14):
-			wall_rect = pygame.Rect(int(m * cell_size),int(12 * cell_size),cell_size,cell_size)
-			screen.blit(self.wall,wall_rect)
-
-		for n in range (9,15):
-			wall_rect = pygame.Rect(int(n* cell_size),int(7 * cell_size),cell_size,cell_size)
-			screen.blit(self.wall,wall_rect)
-
-	def drawwall4(self):
-		self.e=2
-		self.f=10
-		self.g=12
-
-		for f in range (4,10):
-			wall_rect = pygame.Rect(int(f * cell_size),int(16 * cell_size),cell_size,cell_size)
-			screen.blit(self.wall,wall_rect)
 
 class APPLE:
 	def __init__(self):
@@ -210,8 +165,7 @@ class MAIN:
 	def __init__(self):
 		self.snake = SNAKE()
 		self.fruit = FRUIT()
-		self.WALLLEVEL1 = WALLLEVEL1()
-		self.WALLLEVEL2 = WALLLEVEL2()
+		self.wall = WALL()
 		self.apple = APPLE()
 
 	def update(self):
@@ -223,25 +177,8 @@ class MAIN:
 		self.draw_grass()
 		self.fruit.draw_fruit()
 		self.snake.draw_snake()
-		self.draw_score()
-
-	
-	def level1(self):
-		self.draw_grass()
-		self.fruit.draw_fruit()
-		self.snake.draw_snake()
-		self.WALLLEVEL1.drawwall1()
-		self.WALLLEVEL1.drawwall2()
-		self.draw_score()
-
-	def level2(self):
-		self.draw_grass()
-		self.fruit.draw_fruit()
-		self.snake.draw_snake()
-		self.WALLLEVEL2.drawwall1()
-		self.WALLLEVEL2.drawwall2()
-		self.WALLLEVEL2.drawwall3()
-		self.WALLLEVEL2.drawwall4()
+		self.wall.drawwall1()
+		self.wall.drawwall2()
 		self.draw_score()
 
 	def second_apple(self):
@@ -326,6 +263,7 @@ def game():
                         main_game.snake.direction = Vector2(-1,0)
 
         main_game.draw_elements()
+        
         pygame.display.update()
         clock.tick(60)
 
@@ -334,75 +272,10 @@ def easy():
     game()
     
 def medium():
-	# obj = MAIN()
-	# obj.level1()
-    main_game = MAIN()
-
-    SCREEN_UPDATE = pygame.USEREVENT
-    pygame.time.set_timer(SCREEN_UPDATE,150)
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.VIDEORESIZE:
-                surface = pygame.display.set_mode((event.w, event.h),pygame.RESIZABLE)
-            if event.type == SCREEN_UPDATE:
-                main_game.update()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    if main_game.snake.direction.y != 1:
-                        main_game.snake.direction = Vector2(0,-1)
-                if event.key == pygame.K_RIGHT:
-                    if main_game.snake.direction.x != -1:
-                        main_game.snake.direction = Vector2(1,0)
-                if event.key == pygame.K_DOWN:
-                    if main_game.snake.direction.y != -1:
-                        main_game.snake.direction = Vector2(0,1)
-                if event.key == pygame.K_LEFT:
-                    if main_game.snake.direction.x != 1:
-                        main_game.snake.direction = Vector2(-1,0)
-
-       	main_game.level1()
-        pygame.display.update()
-        clock.tick(60)
-
+    game()
     
 def hard():
-	# obj1 = MAIN()
-	# obj1.level2()
-    main_game = MAIN()
-
-    SCREEN_UPDATE = pygame.USEREVENT
-    pygame.time.set_timer(SCREEN_UPDATE,150)
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.VIDEORESIZE:
-                surface = pygame.display.set_mode((event.w, event.h),pygame.RESIZABLE)
-            if event.type == SCREEN_UPDATE:
-                main_game.update()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    if main_game.snake.direction.y != 1:
-                        main_game.snake.direction = Vector2(0,-1)
-                if event.key == pygame.K_RIGHT:
-                    if main_game.snake.direction.x != -1:
-                        main_game.snake.direction = Vector2(1,0)
-                if event.key == pygame.K_DOWN:
-                    if main_game.snake.direction.y != -1:
-                        main_game.snake.direction = Vector2(0,1)
-                if event.key == pygame.K_LEFT:
-                    if main_game.snake.direction.x != 1:
-                        main_game.snake.direction = Vector2(-1,0)
-
-       	main_game.level2()
-        pygame.display.update()
-        clock.tick(60)
+    game()
 
 
 pygame.mixer.pre_init(44100,-16,2,512)
@@ -413,15 +286,12 @@ screen = pygame.display.set_mode((cell_number * cell_size,cell_number * cell_siz
 clock = pygame.time.Clock()
 apple = pygame.image.load('Graphics/apple.png').convert_alpha()
 game_font = pygame.font.Font('Font/PoetsenOne-Regular.ttf', 25)
-menu = pygame_menu.Menu( 'Snake Game',600, 400,theme=pygame_menu.themes.THEME_BLUE)
-menu.add.button('Select Difficulty Level To Continue')
+menu = pygame_menu.Menu( 'Snake',600, 400,theme=pygame_menu.themes.THEME_BLUE)
+# menu.add_text_input('Name:', default='')
+# menu.add_selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
 menu.add.button('Easy', easy)
 menu.add.button('Medium', medium)
 menu.add.button('Hard', hard)
 # menu.add_button('Level 1', game_loop)
 menu.add.button('Quit', pygame_menu.events.EXIT)
 menu.mainloop(screen)
-
-
-
-		
